@@ -26,8 +26,12 @@ assets = [
   ["target/release/vector", "/usr/bin/", "755"],
   ["config/vector.toml", "/etc/vector/vector.toml", "644"],
   ["config/examples/*", "/etc/vector/examples/", "644"],
-  ["distribution/systemd/vector.service", "/etc/systemd/system/vector.service", "644"],
-  ["distribution/systemd/vector.default", "/etc/default/vector", "600"]
+  [
+    "distribution/systemd/vector.service",
+    "/etc/systemd/system/vector.service",
+    "644",
+  ],
+  ["distribution/systemd/vector.default", "/etc/default/vector", "600"],
 ]
 license-file = ["target/debian-license.txt"]
 extended-description-file = "target/debian-extended-description.txt"
@@ -68,7 +72,21 @@ remap-cli = { path = "lib/remap-cli", optional = true }
 # Tokio / Futures
 futures01 = { package = "futures", version = "0.1.25" }
 futures = { version = "0.3", default-features = false, features = ["compat", "io-compat"] }
-tokio = { version = "0.2.13", features = ["blocking", "fs", "io-std", "macros", "process", "rt-core", "rt-threaded", "uds", "udp", "signal", "sync", "time", "stream"] }
+tokio = { version = "0.2.13", features = [
+  "blocking",
+  "fs",
+  "io-std",
+  "macros",
+  "process",
+  "rt-core",
+  "rt-threaded",
+  "uds",
+  "udp",
+  "signal",
+  "sync",
+  "time",
+  "stream",
+] }
 tokio-openssl = "0.4.0"
 tokio-util = { version = "0.3.1", features = ["codec"] }
 async-trait = "0.1"
@@ -76,7 +94,7 @@ async-trait = "0.1"
 # Tracing
 tracing = "0.1.15"
 tracing-core = "0.1.17"
-tracing-futures = { version = "0.2", features = ["futures-01", "futures-03"]}
+tracing-futures = { version = "0.2", features = ["futures-01", "futures-03"] }
 tracing-subscriber = "0.2.15"
 tracing-log = "0.1.0"
 tracing-tower = { git = "https://github.com/tokio-rs/tracing", rev = "f470db1b0354b368f62f9ee4d763595d16373231" }
@@ -145,7 +163,7 @@ openssl-probe = "0.1.2"
 flate2 = "1.0.19"
 async-compression = { version = "0.3.7", features = ["tokio-02", "gzip", "zstd"] }
 structopt = "0.3.21"
-indexmap = {version = "1.5.1", features = ["serde-1"]}
+indexmap = { version = "1.5.1", features = ["serde-1"] }
 http = "0.2"
 typetag = "0.1.6"
 toml = "0.5.8"
@@ -154,7 +172,7 @@ syslog_loose = "0.10.0"
 leveldb = { version = "0.8", optional = true, default-features = false }
 db-key = "0.0.5"
 headers = "0.3"
-rdkafka = { version = "0.24.0", features = ["libz", "ssl", "zstd"], optional = true }
+rdkafka = { version = "0.25.0", features = ["libz", "ssl", "zstd"], optional = true }
 hostname = "0.3.1"
 seahash = { version = "4.0.1", optional = true }
 semver = { version = "0.11.0", features = ["serde"] }
@@ -179,7 +197,7 @@ listenfd = { version = "0.3.3", optional = true }
 socket2 = { version = "0.3.19", optional = true }
 inventory = "0.1.10"
 maxminddb = { version = "0.17.0", optional = true }
-strip-ansi-escapes = { version = "0.1.0"}
+strip-ansi-escapes = { version = "0.1.0" }
 colored = "2.0"
 warp = { version = "0.2.5", default-features = false, optional = true }
 evmap = { version = "10.0.2", features = ["bytes"], optional = true }
@@ -259,15 +277,78 @@ rusty-fork = "0.3.0"
 
 [features]
 # Default features for *-unknown-linux-gnu and *-apple-darwin
-default = ["api", "api-client", "vrl-cli", "sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-plain"]
-default-musl = ["api", "api-client", "vrl-cli", "sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-cmake"]
+default = [
+  "api",
+  "api-client",
+  "vrl-cli",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-plain",
+]
+default-musl = [
+  "api",
+  "api-client",
+  "vrl-cli",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
 # Default features for *-unknown-linux-* which make use of `cmake` for dependencies
-default-cmake = ["api", "api-client", "vrl-cli", "sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-cmake"]
+default-cmake = [
+  "api",
+  "api-client",
+  "vrl-cli",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
 # Default features for *-pc-windows-msvc
 # TODO: Enable SASL https://github.com/timberio/vector/pull/3081#issuecomment-659298042
-default-msvc = ["api", "api-client", "vrl-cli", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "leveldb", "rdkafka-cmake"]
-default-no-api-client = ["api", "sources", "vrl-cli", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-plain"]
-default-no-vrl-cli = ["api", "sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-plain"]
+default-msvc = [
+  "api",
+  "api-client",
+  "vrl-cli",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "leveldb",
+  "rdkafka-cmake",
+]
+default-no-api-client = [
+  "api",
+  "sources",
+  "vrl-cli",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-plain",
+]
+default-no-vrl-cli = [
+  "api",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-plain",
+]
 docs = ["api", "sources", "transforms", "sinks"]
 
 all-logs = ["sources-logs", "transforms-logs", "sinks-logs"]
@@ -276,13 +357,76 @@ all-metrics = ["sources-metrics", "transforms-metrics", "sinks-metrics"]
 # Target specific release features.
 # The `make` tasks will select this according to the appropriate triple.
 # Use this section to turn off or on specific features for specific triples.
-target-x86_64-unknown-linux-gnu = ["api", "api-client", "sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-cmake"]
-target-aarch64-unknown-linux-gnu = ["api", "api-client", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "unix", "leveldb", "rdkafka-cmake"]
-target-x86_64-unknown-linux-musl = ["api", "api-client", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "unix",  "leveldb", "rdkafka-cmake"]
-target-aarch64-unknown-linux-musl = ["api", "api-client", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "unix",  "leveldb", "rdkafka-cmake"]
+target-x86_64-unknown-linux-gnu = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
+target-aarch64-unknown-linux-gnu = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
+target-x86_64-unknown-linux-musl = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
+target-aarch64-unknown-linux-musl = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
 # TODO: Enable leveldb here for armv7-unknown-linux-musleabihf
-target-armv7-unknown-linux-musleabihf = ["api", "api-client", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "rdkafka-cmake"]
-target-armv7-unknown-linux-gnueabihf = ["api", "api-client", "sources", "transforms", "sinks", "vendor-openssl", "vendor-libz", "unix", "leveldb", "rdkafka-cmake"]
+target-armv7-unknown-linux-musleabihf = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "rdkafka-cmake",
+]
+target-armv7-unknown-linux-gnueabihf = [
+  "api",
+  "api-client",
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-openssl",
+  "vendor-libz",
+  "unix",
+  "leveldb",
+  "rdkafka-cmake",
+]
 
 # Enables features that work only on systems providing `cfg(unix)`
 unix = ["jemallocator"]
@@ -309,12 +453,7 @@ kubernetes = ["k8s-openapi", "evmap"]
 vrl-cli = ["remap-cli"]
 
 # API
-api = [
-  "async-graphql",
-  "async-graphql-warp",
-  "itertools",
-  "base64",
-]
+api = ["async-graphql", "async-graphql-warp", "itertools", "base64"]
 
 # API client
 api-client = [
@@ -360,7 +499,14 @@ sources-metrics = [
 sources-apache_metrics = []
 sources-aws_ecs_metrics = []
 sources-aws_kinesis_firehose = ["base64", "sources-utils-tls", "warp"]
-sources-aws_s3 = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_s3", "rusoto_sqs"]
+sources-aws_s3 = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_s3",
+  "rusoto_sqs",
+]
 sources-docker_logs = ["bollard", "dirs-next"]
 sources-file = ["bytesize", "file-source"]
 sources-generator = ["sources-utils-fake"]
@@ -370,18 +516,59 @@ sources-internal_logs = []
 sources-internal_metrics = []
 sources-journald = []
 sources-kafka = ["rdkafka"]
-sources-kubernetes-logs = ["kubernetes", "transforms-merge", "transforms-regex_parser", "file-source"]
+sources-kubernetes-logs = [
+  "kubernetes",
+  "transforms-merge",
+  "transforms-regex_parser",
+  "file-source",
+]
 sources-heroku_logs = ["sources-utils-http"]
 sources-mongodb_metrics = ["mongodb"]
 sources-nginx_metrics = ["nom"]
 sources-postgresql_metrics = ["postgres-openssl", "tokio-postgres"]
-sources-prometheus = ["prometheus-parser", "sinks-prometheus", "sources-utils-http", "warp"]
-sources-socket = ["bytesize", "listenfd", "tokio-util/udp", "sources-utils-udp", "sources-utils-tcp-keepalive", "sources-utils-tcp-socket", "sources-utils-tls", "sources-utils-unix"]
+sources-prometheus = [
+  "prometheus-parser",
+  "sinks-prometheus",
+  "sources-utils-http",
+  "warp",
+]
+sources-socket = [
+  "bytesize",
+  "listenfd",
+  "tokio-util/udp",
+  "sources-utils-udp",
+  "sources-utils-tcp-keepalive",
+  "sources-utils-tcp-socket",
+  "sources-utils-tls",
+  "sources-utils-unix",
+]
 sources-splunk_hec = ["bytesize", "sources-utils-tls", "warp"]
-sources-statsd = ["tokio-util/udp", "listenfd", "sources-utils-udp", "sources-utils-tcp-keepalive", "sources-utils-tcp-socket", "sources-utils-tls", "sources-utils-unix"]
+sources-statsd = [
+  "tokio-util/udp",
+  "listenfd",
+  "sources-utils-udp",
+  "sources-utils-tcp-keepalive",
+  "sources-utils-tcp-socket",
+  "sources-utils-tls",
+  "sources-utils-unix",
+]
 sources-stdin = ["bytesize"]
-sources-syslog = ["bytesize", "listenfd", "tokio-util/udp", "sources-utils-udp", "sources-utils-tcp-keepalive", "sources-utils-tcp-socket", "sources-utils-tls", "sources-utils-unix"]
-sources-vector = ["listenfd", "sources-utils-tcp-keepalive", "sources-utils-tcp-socket", "sources-utils-tls"]
+sources-syslog = [
+  "bytesize",
+  "listenfd",
+  "tokio-util/udp",
+  "sources-utils-udp",
+  "sources-utils-tcp-keepalive",
+  "sources-utils-tcp-socket",
+  "sources-utils-tls",
+  "sources-utils-unix",
+]
+sources-vector = [
+  "listenfd",
+  "sources-utils-tcp-keepalive",
+  "sources-utils-tcp-socket",
+  "sources-utils-tls",
+]
 sources-utils-fake = []
 sources-utils-http = ["sources-utils-tls", "warp", "snap"]
 sources-utils-tcp-keepalive = []
@@ -434,7 +621,7 @@ transforms-metrics = [
 transforms-add_fields = []
 transforms-add_tags = []
 transforms-ansi_stripper = []
-transforms-aws_cloudwatch_logs_subscription_parser= []
+transforms-aws_cloudwatch_logs_subscription_parser = []
 transforms-aws_ec2_metadata = ["evmap"]
 transforms-coercer = []
 transforms-concat = []
@@ -493,7 +680,7 @@ sinks-logs = [
   "sinks-sematext",
   "sinks-socket",
   "sinks-splunk_hec",
-  "sinks-vector"
+  "sinks-vector",
 ]
 sinks-metrics = [
   "sinks-aws_cloudwatch_metrics",
@@ -506,20 +693,63 @@ sinks-metrics = [
   "sinks-prometheus",
   "sinks-sematext",
   "sinks-statsd",
-  "sinks-vector"
+  "sinks-vector",
 ]
-sinks-aws_cloudwatch_logs = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_logs"]
-sinks-aws_cloudwatch_metrics = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_cloudwatch"]
-sinks-aws_kinesis_firehose = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_firehose"]
-sinks-aws_kinesis_streams = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_kinesis"]
-sinks-aws_s3 = ["bytesize", "rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_s3"]
-sinks-aws_sqs = ["rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts", "rusoto_sqs"]
+sinks-aws_cloudwatch_logs = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_logs",
+]
+sinks-aws_cloudwatch_metrics = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_cloudwatch",
+]
+sinks-aws_kinesis_firehose = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_firehose",
+]
+sinks-aws_kinesis_streams = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_kinesis",
+]
+sinks-aws_s3 = [
+  "bytesize",
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_s3",
+]
+sinks-aws_sqs = [
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+  "rusoto_sqs",
+]
 sinks-azure_monitor_logs = ["bytesize"]
 sinks-blackhole = []
 sinks-clickhouse = ["bytesize"]
 sinks-console = []
 sinks-datadog = ["bytesize"]
-sinks-elasticsearch = ["bytesize", "rusoto_core", "rusoto_credential", "rusoto_signature", "rusoto_sts"]
+sinks-elasticsearch = [
+  "bytesize",
+  "rusoto_core",
+  "rusoto_credential",
+  "rusoto_signature",
+  "rusoto_sts",
+]
 sinks-file = []
 sinks-gcp = ["base64", "bytesize", "goauth", "smpl_jwt"]
 sinks-honeycomb = ["bytesize"]
@@ -580,7 +810,11 @@ aws-cloudwatch-logs-integration-tests = ["sinks-aws_cloudwatch_logs"]
 aws-cloudwatch-metrics-integration-tests = ["sinks-aws_cloudwatch_metrics"]
 aws-ec2-metadata-integration-tests = ["transforms-aws_ec2_metadata"]
 aws-ecs-metrics-integration-tests = ["sources-aws_ecs_metrics"]
-aws-kinesis-firehose-integration-tests = ["sinks-aws_kinesis_firehose", "sinks-elasticsearch", "rusoto_es"]
+aws-kinesis-firehose-integration-tests = [
+  "sinks-aws_kinesis_firehose",
+  "sinks-elasticsearch",
+  "rusoto_es",
+]
 aws-kinesis-streams-integration-tests = ["sinks-aws_kinesis_streams"]
 aws-s3-integration-tests = ["sources-aws_s3", "sinks-aws_s3"]
 aws-sqs-integration-tests = ["sinks-aws_sqs"]
@@ -598,19 +832,60 @@ mongodb_metrics-integration-tests = ["sources-mongodb_metrics"]
 nats-integration-tests = ["sinks-nats"]
 nginx-integration-tests = ["sources-nginx_metrics"]
 postgresql_metrics-integration-tests = ["sources-postgresql_metrics"]
-prometheus-integration-tests = ["sinks-prometheus", "sources-prometheus", "bytesize"]
+prometheus-integration-tests = [
+  "sinks-prometheus",
+  "sources-prometheus",
+  "bytesize",
+]
 pulsar-integration-tests = ["sinks-pulsar"]
 splunk-integration-tests = ["sinks-splunk_hec", "warp"]
 
-shutdown-tests = ["sources","sinks-console","sinks-prometheus","sinks-blackhole","unix","rdkafka","transforms-log_to_metric","transforms-lua"]
+shutdown-tests = [
+  "sources",
+  "sinks-console",
+  "sinks-prometheus",
+  "sinks-blackhole",
+  "unix",
+  "rdkafka",
+  "transforms-log_to_metric",
+  "transforms-lua",
+]
 disable-resolv-conf = []
 
 # grouping together features for benchmarks
 # excluing API client due to running out of memory during linking in Github Actions
-benches = ["sources", "transforms", "sinks", "vendor-all", "unix", "leveldb", "rdkafka-plain"]
-wasm-benches = ["transforms-add_fields", "transforms-field_filter", "transforms-wasm", "transforms-lua", "transforms-remap"]
-remap-benches = ["transforms-add_fields", "transforms-remap", "transforms-coercer", "transforms-json_parser"]
-language-benches = ["sinks-socket", "sources-socket", "transforms-add_fields", "transforms-json_parser", "transforms-regex_parser", "transforms-wasm", "transforms-lua", "transforms-remap"]
+benches = [
+  "sources",
+  "transforms",
+  "sinks",
+  "vendor-all",
+  "unix",
+  "leveldb",
+  "rdkafka-plain",
+]
+wasm-benches = [
+  "transforms-add_fields",
+  "transforms-field_filter",
+  "transforms-wasm",
+  "transforms-lua",
+  "transforms-remap",
+]
+remap-benches = [
+  "transforms-add_fields",
+  "transforms-remap",
+  "transforms-coercer",
+  "transforms-json_parser",
+]
+language-benches = [
+  "sinks-socket",
+  "sources-socket",
+  "transforms-add_fields",
+  "transforms-json_parser",
+  "transforms-regex_parser",
+  "transforms-wasm",
+  "transforms-lua",
+  "transforms-remap",
+]
 # Separate benching process for metrics due to the nature of the bootstrap procedures.
 metrics-benches = ["sources-socket", "sinks-socket"]
 
